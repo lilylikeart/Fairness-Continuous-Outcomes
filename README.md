@@ -97,6 +97,8 @@ df$abs_error <- abs(df$error)
 
 AreaCDF compares the distribution of prediction errors (or absolute prediction errors) between demographic groups.
 
+**Note:** This function returns only the point estimate. To compute bootstrap confidence intervals, use `bootstrap_metric_ci()`.
+
 ```r
 result <- compute_AreaCDF(
   data = df,
