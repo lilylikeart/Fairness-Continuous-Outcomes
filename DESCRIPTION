@@ -1,0 +1,24 @@
+Package: fairRegression
+Type: Package
+Title: Distribution-Aware Fairness Metrics for Regression Models
+Version: 0.1.0
+Authors@R:
+    person(
+      given = "Lin",
+      family = "Li",
+      email = "lilylovelin37@gmail.com",
+      role = c("aut", "cre")
+    )
+Description: Provides methods for evaluating fairness in regression models,
+    including distribution-based fairness metrics and statistical tools for
+    comparing prediction outcomes across demographic groups.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    cli,
+    e1071,
+    vctrs,
+    stats
