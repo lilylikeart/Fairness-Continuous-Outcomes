@@ -33,19 +33,155 @@ Most existing fairness metrics assume discrete outcomes (e.g., classification). 
 
 Our framework addresses these challenges directly.
 
-## 📦 R Package for Fairness Metrics
+## 📦 fairRegression: R Package for Fairness Metrics
 
-To support reproducibility and practical use, we provide an **R package** that implements the proposed fairness metrics.
+**fairRegression** is an R package for evaluating fairness in regression models using distribution-based fairness metrics. It provides methods to quantify differences between prediction distributions across demographic groups, together with bootstrap confidence intervals for statistical inference.
 
-### Features
+## Features
 
-- Compute **AreaPDF** and **AreaCDF**
-- Kernel Density Estimation (KDE)-based distribution estimation
-- Bootstrap confidence intervals for fairness metrics
-- Flexible support for different group definitions
+- Compute the **AreaCDF** fairness metric based on empirical cumulative distribution functions.
+- Compute the **AreaPDF** fairness metric based on kernel density estimation.
+- Compute **Conditional AreaPDF** by stratifying on a conditioning variable.
+- Estimate confidence intervals using:
+  - Percentile bootstrap
+  - BCa (Bias-Corrected and Accelerated) bootstrap
+  - Studentized (bootstrap-t) intervals
+- Compare the fairness of two regression models using bootstrap inference.
 
-### Installation
+---
+
+## Installation
+
+### Install from GitHub
 
 ```r
-# Install from GitHub
-devtools::install_github("your-username/your-repo-name")
+install.packages("remotes")
+
+remotes::install_github("lilylikeart/Fairness-Continuous-Outcomes")
+```
+
+### Load the package
+
+```r
+library(fairRegression)
+```
+
+---
+
+## Quick Start
+
+### Simulated Data
+
+```r
+set.seed(1)
+
+df <- data.frame(
+  score = c(rnorm(100, 0), rnorm(100, 0.5)),
+  group = rep(c(0, 1), each = 100)
+)
+```
+
+### Compute AreaCDF
+
+```r
+result <- compute_AreaCDF(
+  data = df,
+  target_col = "score",
+  group_col = "group"
+)
+
+result$AreaCDF
+```
+
+### Compute AreaPDF
+
+```r
+result <- compute_AreaPDF(
+  data = df,
+  target_col = "score",
+  group_col = "group"
+)
+
+result$AreaPDF
+```
+
+### Compute Conditional AreaPDF
+
+```r
+set.seed(1)
+
+df$age <- runif(nrow(df), 18, 65)
+
+result <- compute_AreaPDF_cond(
+  data = df,
+  target_col = "score",
+  condition_col = "age",
+  group_col = "group"
+)
+
+result$mean_AreaPDF
+```
+
+### Bootstrap Confidence Interval
+
+```r
+bootstrap_metric_ci(
+  df,
+  target = "score",
+  group = "group",
+  metric = "AreaCDF",
+  B = 200
+)
+```
+
+### Compare Two Models
+
+```r
+bootstrap_metric_diff_ci(
+  df,
+  pred_baseline = "baseline_prediction",
+  pred_method = "new_prediction",
+  group = "group",
+  metric = "AreaCDF",
+  B = 200
+)
+```
+
+---
+
+## Main Functions
+
+| Function | Description |
+|----------|-------------|
+| `compute_AreaCDF()` | Computes the AreaCDF fairness metric. |
+| `compute_AreaPDF()` | Computes the AreaPDF fairness metric. |
+| `compute_AreaPDF_cond()` | Computes the conditional AreaPDF fairness metric across bins of a conditioning variable. |
+| `bootstrap_metric_ci()` | Computes bootstrap confidence intervals for fairness metrics. |
+| `bootstrap_metric_diff_ci()` | Compares two regression models using bootstrap inference. |
+| `check_bootstrap_skew()` | Computes diagnostic statistics for bootstrap distributions. |
+
+---
+
+## Documentation
+
+After installing the package, documentation for each function is available through:
+
+```r
+?compute_AreaCDF
+?compute_AreaPDF
+?compute_AreaPDF_cond
+?bootstrap_metric_ci
+?bootstrap_metric_diff_ci
+```
+
+---
+
+## Citation
+
+If you use **fairRegression** in academic research, please cite the associated publication (citation information will be added once available).
+
+---
+
+## License
+
+This package is released under the MIT License.
