@@ -136,6 +136,41 @@ result <- compute_AreaPDF_cond(
 result$mean_AreaPDF
 ```
 
+
+### Bootstrap Confidence Interval
+
+Estimate a bootstrap confidence interval for a fairness metric.
+
+```r
+result <- bootstrap_metric_ci(
+  df = df,
+  target = "abs_error",
+  group = "group",
+  metric = "AreaCDF",
+  B = 200,
+  compute_bca = TRUE
+)
+
+result
+```
+
+### Bootstrap Confidence Interval for Conditional AreaPDF
+
+Estimate a bootstrap confidence interval for the conditional AreaPDF metric.
+
+```r
+result <- bootstrap_metric_ci(
+  df = df,
+  target = "abs_error",
+  group = "group",
+  cond = "actual",
+  metric = "AreaPDF_cond",
+  B = 200,
+  compute_bca = TRUE
+)
+
+result
+```
 ---
 
 ## Main Functions
