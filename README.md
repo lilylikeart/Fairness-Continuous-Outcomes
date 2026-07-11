@@ -75,18 +75,32 @@ library(fairRegression)
 ```r
 set.seed(1)
 
+n <- 200
+
 df <- data.frame(
-  score = c(rnorm(100, 0), rnorm(100, 0.5)),
+  actual = rnorm(n, mean = 50, sd = 10),
+  prediction = c(
+    rnorm(100, mean = 50, sd = 9),
+    rnorm(100, mean = 52, sd = 11)
+  ),
   group = rep(c(0, 1), each = 100)
 )
+
+# Prediction error
+df$error <- df$prediction - df$actual
+
+# Absolute prediction error
+df$abs_error <- abs(df$error)
 ```
 
 ### Compute AreaCDF
 
+AreaCDF compares the distribution of prediction errors (or absolute prediction errors) between demographic groups.
+
 ```r
 result <- compute_AreaCDF(
   data = df,
-  target_col = "score",
+  target_col = "abs_error",
   group_col = "group"
 )
 
@@ -95,10 +109,12 @@ result$AreaCDF
 
 ### Compute AreaPDF
 
+AreaPDF measures the difference between the probability density functions of prediction errors (or absolute prediction errors) across groups.
+
 ```r
 result <- compute_AreaPDF(
   data = df,
-  target_col = "score",
+  target_col = "abs_error",
   group_col = "group"
 )
 
@@ -107,44 +123,17 @@ result$AreaPDF
 
 ### Compute Conditional AreaPDF
 
+Conditional AreaPDF compares prediction errors between groups after conditioning on the ground-truth outcome.
+
 ```r
-set.seed(1)
-
-df$age <- runif(nrow(df), 18, 65)
-
 result <- compute_AreaPDF_cond(
   data = df,
-  target_col = "score",
-  condition_col = "age",
+  target_col = "abs_error",
+  condition_col = "actual",
   group_col = "group"
 )
 
 result$mean_AreaPDF
-```
-
-### Bootstrap Confidence Interval
-
-```r
-bootstrap_metric_ci(
-  df,
-  target = "score",
-  group = "group",
-  metric = "AreaCDF",
-  B = 200
-)
-```
-
-### Compare Two Models
-
-```r
-bootstrap_metric_diff_ci(
-  df,
-  pred_baseline = "baseline_prediction",
-  pred_method = "new_prediction",
-  group = "group",
-  metric = "AreaCDF",
-  B = 200
-)
 ```
 
 ---
