@@ -111,6 +111,8 @@ result$AreaCDF
 
 AreaPDF measures the difference between the probability density functions of prediction errors (or absolute prediction errors) across groups.
 
+**Note:** This function returns only the point estimate. To compute bootstrap confidence intervals, use `bootstrap_metric_ci()`.
+
 ```r
 result <- compute_AreaPDF(
   data = df,
@@ -124,6 +126,8 @@ result$AreaPDF
 ### Compute Conditional AreaPDF
 
 Conditional AreaPDF compares prediction errors between groups after conditioning on the ground-truth outcome.
+
+**Note:** This function returns only the point estimate. To compute bootstrap confidence intervals, use `bootstrap_metric_ci()`.
 
 ```r
 result <- compute_AreaPDF_cond(
@@ -140,6 +144,8 @@ result$mean_AreaPDF
 ### Bootstrap Confidence Interval
 
 Estimate a bootstrap confidence interval for a fairness metric.
+
+**Note:** This function returns the metric estimate together with bootstrap confidence intervals (Percentile, BCa, and/or Studentized, depending on the selected options), allowing statistical inference on the fairness metric.
 
 ```r
 result <- bootstrap_metric_ci(
