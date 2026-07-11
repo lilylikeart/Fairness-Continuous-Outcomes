@@ -210,8 +210,18 @@ After installing the package, documentation for each function is available throu
 
 ## Citation
 
-If you use **fairRegression** in academic research, please cite the associated publication (citation information will be added once available).
+If you use **fairRegression** in academic research, please cite the associated publication.
 
+```r
+@article{li2026beyond,
+  title={Beyond binary outcomes: Evaluating and mitigating bias in national standardized test score prediction},
+  author={Li, Lin and Srivatava, Namrata and Rong, Jia and Guan, Quanlong and Ga{\v{s}}evi{\'c}, Dragan and Chen, Guanliang},
+  journal={Computers and Education: Artificial Intelligence},
+  pages={100585},
+  year={2026},
+  publisher={Elsevier}
+}
+```
 ---
 
 ## License
